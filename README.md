@@ -17,7 +17,6 @@ A network game.
 *with some luck
 
 
-
 Chess:
 
 
