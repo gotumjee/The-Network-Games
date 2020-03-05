@@ -1,27 +1,17 @@
 # The-Network-Games
-Fairly ambitious-ish project
+Fairly ambitious-ish project<br/>
 
-A network game.
+A network game.<br/><br/>
+·	Chess<br/>
+·	Nougats and Crosses<br/>
+·	Hangman<br/>
+·	Battleships<br/>
+·	Deduce or die (ZKP??) *<br/>
 
-·	Chess
+*with some luck<br/><br/>
 
-·	Nougats and Crosses
+Chess:<br/><br/>
 
-·	Hangman
-
-·	Battleships
-
-·	Deduce or die (ZKP??) *
-
-
-*with some luck
-
-
-Chess:
-
-
-James: Preparing the game
-
-Gautam: Encrypt it
-
-Murray: Do the networking bit
+James: Preparing the game<br/>
+Gautam: Encrypt it<br/>
+Murray: Do the networking bit<br/>
