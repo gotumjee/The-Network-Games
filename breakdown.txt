@@ -1,0 +1,13 @@
+game
+  -chess
+  -noughts and corosses
+  -battleships
+  -hangman
+
+network
+  -sockets
+  -encryption
+  -key exchange?
+
+gui?
+interface
