@@ -3,11 +3,18 @@ game
   -noughts and corosses
   -battleships
   -hangman
+  
+ 
+  -sending current gamestate as a string
+  -illegal move?
+  
 
 network
   -sockets
   -encryption
   -key exchange?
+  -hosting and joining a game
+  -
 
 gui?
 interface
