@@ -8,9 +8,9 @@ A network game.<br/><br/>
 ·	Battleships<br/>
 ·	Deduce or die (ZKP??) *<br/>
 
-*with some luck<br/><br/>
+*with some luck<br/>
 
-Chess:<br/><br/>
+Chess:<br/>
 
 James: Preparing the game<br/>
 Gautam: Encrypt it<br/>
