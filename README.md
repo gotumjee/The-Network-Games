@@ -4,9 +4,13 @@ Fairly ambitious-ish project
 A network game.
 
 ·	Chess
+
 ·	Nougats and Crosses
+
 ·	Hangman
+
 ·	Battleships
+
 ·	Deduce or die (ZKP??) *
 
 *with some luck
