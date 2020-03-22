@@ -10,6 +10,8 @@ network = Network_sockets()
 while(True):
     usr = input("Host (h) or connect (c)").lower()
     if(usr == 'h'):
+        host_ip = socket.gethostbyname(socket.gethostname())
+        print("IP Address: ", host_ip)
         i = False
         network.host()
         break
