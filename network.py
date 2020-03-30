@@ -27,15 +27,15 @@ class Network_sockets:
         self.sock.bind(('',self.port))
         self.sock.listen(5)
         self.conn, self.addr = self.sock.accept()
-        print("Received connection from ", self.addr)
+        print("Received a connection from ", self.addr)
 
     def connect(self):
-        self.ip_addr = input("Enter the IP address: \n")
+        self.ip_addr = input("Enter the IP address: ")
         self.sock.connect((self.ip_addr, self.port))
 
     def send(self, msg):
         #takes a string then sends
-        msg=do_encrypt(msg)
+        msg=do_encrypt(str(msg))
         if(self.hosting):
             self.conn.send(msg)
         else:
@@ -43,7 +43,6 @@ class Network_sockets:
 
     def receive(self):
         #wait for the return string
-        print("\nWaiting for string..\n")
         if(self.hosting):
             return(do_decrypt(self.conn.recv(1024)))
         return(do_decrypt(self.sock.recv(1024)))
