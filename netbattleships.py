@@ -61,7 +61,7 @@ def conversion(board, row, column):
 def display(board):
 
     row = 0 #represents each rows
-    print("     1   2   3   4   5   6   7   8   9   10") #prints the line numbers horizontally
+    print("\n     1   2   3   4   5   6   7   8   9   10") #prints the line numbers horizontally
 
     for i in range(21):
         if (i%2 == 0):
