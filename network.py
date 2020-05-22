@@ -3,7 +3,7 @@ from Crypto.Cipher import AES #use "pip install pycryptodome" to install the req
 
 #implementing symmetric encryption with both parties having to use the same key and initalization vector
 def do_encrypt(message):
-    obj = AES.new("#carperiemdabest".encode("utf8"), AES.MODE_CFB, "onlysometimestho".encode("utf8")) #creates an object (cipher) to encrypt the message 
+    obj = AES.new("#carperiemdabest".encode("utf8"), AES.MODE_CFB, "onlysometimestho".encode("utf8")) #creates an object (cipher) to encrypt the message
     message = message.encode("utf8") #converts the string to binary to be encrypted
     ciphertext = obj.encrypt(message) #encrypts the message using the unique cipher
     return ciphertext
