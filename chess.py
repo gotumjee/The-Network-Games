@@ -1,7 +1,5 @@
 from grid import Grid
 
-# TODO Resign and Stalemate differentiation?
-
 DIRECTIONS = ("N", "NE", "E", "SE", "S", "SW", "W", "NW")
 
 CHESS_PRINT = {
@@ -21,6 +19,12 @@ CHESS_PRINT = {
 
 
 def distance(x1, y1, x2, y2):
+    """ Distance Function
+    This function takes two co-ordinates from a square game board: (x1, y1) & (x2, y2)
+    and finds the distance between them. The distance is based upon the number of cells
+    between the two given cells, including the destination cell. If the two cells are not
+    in a straight line, -1 is returned. If they are in a straight line, the distance is returned
+    """
     x = abs(x1 - x2)
     y = abs(y1 - y2)
 
@@ -28,9 +32,18 @@ def distance(x1, y1, x2, y2):
         return x
     elif (x == 0) or (y == 0):
         return x+y
+    else:
+        return -1
 
 
 def direction(x1, y1, x2, y2):
+    """ Direction Function
+    This function takes two co-ordinates from a square game board: (x1, y1) & (x2, y2)
+    and finds the cardinal direction between them relative to (x1, y1). The direction is
+    returned. Note that the function does not check that those directions which are not
+    entirely north, south, east or west are exactly any other direction (for example NNW
+    becomes NW).
+    """
     line = ""
     if y1 > y2:
         line += "N"
@@ -45,18 +58,14 @@ def direction(x1, y1, x2, y2):
     return line
 
 
-# noinspection DuplicatedCode
 class Chess:
     """ The Chess Class
-
     This class a container for a game of chess and has two public
-    classes: 'printBoard' and 'inputToGame'.  All other classes are
-    private and should not be accessed by code outside of the
-    class.
+    classes: "printBoard" and "inputToGame".  All other classes are
+    private and should not be accessed by code outside of the class.
     """
 
     def __init__(self, fill=None):
-
         # Create the board.
         self.fill = fill
         self.board = Grid(8, 8, fill)
@@ -74,26 +83,30 @@ class Chess:
         self.board.setYStripValues(0, ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"], 1)
         self.board.setYStripValues(7, ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"], 1)
 
-    # Print the board
     def printBoard(self):
-        # TODO Make this look better
-        print("  0 1 2 3 4 5 6 7")
+        # Print the board.
+        print("* │ a b c d e f g h\n──┼─────────────────")
         for y in range(8):
-            print(y, end=" ")
+            print(str(y + 1) + " │", end=" ")
             for x in range(8):
                 if self.board.getCellValue(x, y) is not None:
                     print(CHESS_PRINT[self.board.getCellValue(x, y)], end=" ")
                 else:
-                    print("  ", end="")
+                    print(". ", end="")
             print("")
 
-    # Checking for checkmate & check
-    # The process for input to the game. Strings are inputted into the game and are used to play/control the states
     def inputToGame(self, stringIn):
+        """ The inputToGame function
+        The process for input to the game. Strings are inputted into the game
+        and are used to play/control the states.
+        """
+
         if stringIn.lower() == "r":
+            # Choose to resign from the game.
             self.gameOver()
-            return 1
+            return -1
         elif stringIn.lower() == "cl" and self.castlingCheck()[0] == 1:
+            # Castle left (relative to the player's view)
             if self.turn == 0:
                 self.board.swapTwo(4, 7, 2, 7)
                 self.board.swapTwo(0, 7, 3, 7)
@@ -101,8 +114,8 @@ class Chess:
                 self.board.swapTwo(4, 0, 2, 0)
                 self.board.swapTwo(0, 0, 3, 0)
             return 1
-
         elif stringIn.lower() == "cr" and self.castlingCheck()[1] == 1:
+            # Castle right (relative to the player's view)
             if self.turn == 0:
                 self.board.swapTwo(4, 7, 6, 7)
                 self.board.swapTwo(7, 7, 5, 7)
@@ -111,26 +124,32 @@ class Chess:
                 self.board.swapTwo(7, 0, 5, 0)
             return 1
 
-        for n in range(4):
-            if stringIn[n] < "0" or stringIn[n] > "7":
+        # Check each coordinate is valid
+        for i in range(4):
+            if (i % 2 == 0) and (stringIn[i] < "a" or stringIn[i] > "h"):
+                return 0
+            elif stringIn[i] < "1" or stringIn[i] > "8":
                 return 0
 
-        x1 = int(stringIn[0])
-        y1 = int(stringIn[1])
-        x2 = int(stringIn[2])
-        y2 = int(stringIn[3])
-
-        print("inputToGame executed")
-        print(self.board.getCellValue(x1, y1), self.board.getCellValue(x2, y2))
+        # Take each coordinate from input
+        x1 = ord(stringIn[0]) - 97
+        y1 = int(stringIn[1]) - 1
+        x2 = int(stringIn[2]) - 97
+        y2 = int(stringIn[3]) - 1
 
         if self.validMove(x1, y1, x2, y2) == 1:
             print("Move was valid! If your king is not in check")
             self.board.swapTwo(x1, y1, x2, y2)
+            temp = self.board.getCellValue(x1, y1)
+            self.board.setCellValue(x1, y1, self.fill)
+
             whiteCheck, blackCheck = self.checkForCheck()
 
             if (self.turn == 0 and whiteCheck == 1) or (self.turn == 0 and blackCheck == 1):
                 print("You cannot put yourself into check.")
+                self.board.setCellValue(x1, y1, temp)
                 self.board.swapTwo(x1, y1, x2, y2)
+
                 return 0
             else:
                 if whiteCheck == 1 or blackCheck == 1:
@@ -185,6 +204,8 @@ class Chess:
             x += xStep
             y += yStep
             distanceAway += 1
+
+        return -1, -1
 
     # Checking a move is valid. Returns boolean
     def validMove(self, x1, y1, x2, y2):
@@ -547,8 +568,12 @@ class Chess:
         else:
             print("Stalemate or Resignation! No winner.")
 
-a = Chess()
+def main():
+    a = Chess()
+    while True:
+        a.printBoard()
+        a.inputToGame(input(""))
 
-while True:
-    a.printBoard()
-    a.inputToGame(input(""))
+
+if __name__ == "__main__":
+    main()
