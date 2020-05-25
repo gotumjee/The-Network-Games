@@ -20,7 +20,7 @@ def clear():
 
 
 def typewriter(message):
-    """ A display function. Writes each character with a """
+    """ A display function. Writes each character with a delay"""
     for char in message:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -41,6 +41,8 @@ def main():
         turn = None
         netName = None
         game = None
+        gameChoice = None
+        displayOpponentCommands = None
 
         while True is True:
             usr = input("1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ")
@@ -51,10 +53,14 @@ def main():
 
                 if gameChoice == 1:
                     game = Chess()
+                    displayOpponentCommands = 1
                 elif gameChoice == 2:
-                    pass
+                    # game = battleships()
+                    displayOpponentCommands = 0
+                    # game.inputToGame(1)
                 else:
-                    pass
+                    # game = tictactoe()
+                    displayOpponentCommands = 1
 
                 ip = get("https://api.ipify.org").text
                 print("Your public IP address is: ", ip)
@@ -79,6 +85,8 @@ def main():
         if usr == "1":
             turn = True
 
+            network.send(gameChoice)
+
             localName = str(input("Enter your name: "))
             sleep(0.1)
             network.send(localName)
@@ -99,6 +107,18 @@ def main():
 
         elif usr == "2":
             turn = False
+
+            gameChoice = network.receive()
+            if gameChoice == 1:
+                game = Chess()
+                displayOpponentCommands = 1
+            elif gameChoice == 2:
+                # game = battleships()
+                displayOpponentCommands = 0
+                # game.inputToGame(2)
+            else:
+                # game = tictactoe()
+                displayOpponentCommands = 1
 
             localName = str(input("Enter your name: "))
             netName = network.receive()
@@ -125,7 +145,10 @@ def main():
                 while gameState == 0:
                     print("Waiting for %s to play..." % netName)
                     userInput = network.receive()
-                    print("%s tries: '%s'" % (netName, userInput))
+                    if displayOpponentCommands == 1:
+                        print("%s tries: %s" % (netName, userInput))
+                    else:
+                        print("%s entered a command" % netName)
                     gameState = game.inputToGame(userInput)
                 turn = True
                 gameState = None
