@@ -55,9 +55,8 @@ def main():
                     game = Chess()
                     displayOpponentCommands = 1
                 elif gameChoice == 2:
-                    # game = battleships()
+                    # game = battleships(1)
                     displayOpponentCommands = 0
-                    # game.inputToGame(1)
                 else:
                     # game = tictactoe()
                     displayOpponentCommands = 1
@@ -113,9 +112,8 @@ def main():
                 game = Chess()
                 displayOpponentCommands = 1
             elif gameChoice == 2:
-                # game = battleships()
+                # game = battleships(2)
                 displayOpponentCommands = 0
-                # game.inputToGame(2)
             else:
                 # game = tictactoe()
                 displayOpponentCommands = 1
