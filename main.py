@@ -1,5 +1,6 @@
 from network import *
 from chess import *
+from noughtsandcrosses import *
 from requests import get
 from time import sleep
 import sys
@@ -58,7 +59,7 @@ def main():
                     # game = battleships(1)
                     displayOpponentCommands = 0
                 else:
-                    # game = tictactoe()
+                    game = NoughtsAndCrosses()
                     displayOpponentCommands = 1
 
                 ip = get("https://api.ipify.org").text
