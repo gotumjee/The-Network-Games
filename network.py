@@ -15,10 +15,10 @@ def do_decrypt(ciphertext):
     return message
 
 class Network_sockets:
-    def __init__(self, port):
+    def __init__(self):
         #takes port number
         #define port and use TCP
-        self.port = port
+        self.port = 6969
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.hosting = False
 
