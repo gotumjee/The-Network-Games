@@ -70,7 +70,8 @@ def main():
                 break
 
             elif usr == "2":
-                network.connect()
+                ip_addr = input("Enter the IP address: ")
+                network.connect(ip_addr)
                 break
 
             elif usr == "3":
