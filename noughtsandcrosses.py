@@ -72,7 +72,8 @@ class NoughtsAndCrosses():
         #next player
         return 1
 
-game = NoughtsAndCrosses()
-gameState = 0
-while(gameState != -1):
-    gameState = game.inputToGame(input())
+#for testing:
+#game = NoughtsAndCrosses()
+#gameState = 0
+#while(gameState != -1):
+    #gameState = game.inputToGame(input())
