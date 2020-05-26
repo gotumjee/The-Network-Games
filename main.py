@@ -1,12 +1,14 @@
 from network import *
 from chess import *
 from noughtsandcrosses import *
+from chat import *
 from requests import get
 from time import sleep
 import sys
 import time
 import os
 import shutil
+import threading
 
 network = Network_sockets()
 
@@ -131,6 +133,10 @@ def main():
             network.send(1)
             input("Press ENTER to continue ")
 
+        print("Opening chat...")
+        #open the chat window
+        threading.Thread(target=open_chat, args=(localName, usr)).start()
+        
         gameState = None
 
         while gameState != -1:
