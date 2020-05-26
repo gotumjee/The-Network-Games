@@ -15,10 +15,11 @@ def do_decrypt(ciphertext):
     return message
 
 class Network_sockets:
-    def __init__(self):
+    def __init__(self, port=6969):
         #takes port number
         #define port and use TCP
-        self.port = 6969
+        #use 6969 if no port number is given
+        self.port = port
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.hosting = False
 
@@ -30,9 +31,8 @@ class Network_sockets:
         self.conn, self.addr = self.sock.accept()
         print("Received a connection from ", self.addr)
 
-    def connect(self):
-        self.ip_addr = input("Enter the IP address: ")
-        self.sock.connect((self.ip_addr, self.port))
+    def connect(self, ip_addr):
+        self.sock.connect((ip_addr, self.port))
 
     def send(self, msg):
         #takes a string then sends
