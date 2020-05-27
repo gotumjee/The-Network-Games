@@ -19,6 +19,9 @@ class Network_sockets:
         #takes port number
         #define port and use TCP
         #use 6969 if no port number is given
+        #if number too high, use default
+        if(port > 65535):
+            port = 6969
         self.port = port
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.hosting = False
@@ -34,7 +37,7 @@ class Network_sockets:
     def connect(self, ip_addr):
         self.sock.connect((ip_addr, self.port))
 
-    def send(self, msg):
+    def send(self, msg = ''):
         #takes a string then sends
         msg=do_encrypt(str(msg))
         if(self.hosting):
