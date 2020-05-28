@@ -1,10 +1,10 @@
 import sys
-import time
 import os
 import shutil
 import threading
+import time
+
 from requests import get
-from time import sleep
 
 from network import *
 from chess import *
@@ -50,6 +50,7 @@ def main():
         game = None
         gameChoice = None
         displayOpponentCommands = None
+        localName = None
 
         while True is True:
             # Input menu loop
@@ -59,10 +60,10 @@ def main():
                 while gameChoice < "1" or gameChoice > "3":
                     gameChoice = input("\n\n1. Chess.\n2. Battleships.\n3. Noughts and Crosses.\n\nEnter your choice: ")
 
-                if gameChoice == 1:
+                if gameChoice == "1":
                     game = Chess()
                     displayOpponentCommands = 1
-                elif gameChoice == 2:
+                elif gameChoice == "2":
                     game = Battleships(1)
                     displayOpponentCommands = 0
                 else:
@@ -73,7 +74,7 @@ def main():
                 ip = get("https://api.ipify.org").text
                 print("Your public IP address is: ", ip)
                 sleep(1)
-                typewriter("Waiting for a connection..")
+                typewriter("Waiting for a connection...\n")
                 network.host()
                 break
 
@@ -120,14 +121,14 @@ def main():
             turn = False
 
             gameChoice = network.receive()
-            if gameChoice == 1:
+            if gameChoice == "1":
                 game = Chess()
                 displayOpponentCommands = 1
-            elif gameChoice == 2:
-                # game = battleships(2)
+            elif gameChoice == "2":
+                game = Battleships(2)
                 displayOpponentCommands = 0
             else:
-                # game = tictactoe()
+                game = NoughtsAndCrosses()
                 displayOpponentCommands = 1
 
             localName = str(input("Enter your name: "))
@@ -144,15 +145,15 @@ def main():
         print("Opening chat...")
         # open the chat window
         threading.Thread(target=open_chat, args=(localName, usr)).start()
-
-        gameState = None
+        print("I'm here")
+        gameState = 0
 
         # Game Explanations
-        if gameChoice == 1:
+        if gameChoice == "1":
             print("Welcome to Chess. Enter 'r' to resign, 'cl' and 'cr' to castle left or right (respectively) or a",
                   "set of co-ordinates in the form 'a1a1' to move a piece.")
             game.printBoard()
-        elif gameChoice == 2:
+        elif gameChoice == "2":
             # Battleships instructions
             pass
         else:
@@ -160,28 +161,32 @@ def main():
             pass
 
         # Game play loop
+        gameState = 0
         while gameState != -1:
             if turn is True:
+                gameState = 0
                 while gameState == 0:
-                    userInput = input()
+                    userInput = input("\nIt's your turn!: ")
+                    print("\n")
                     network.send(userInput)
                     gameState = game.inputToGame(userInput)
                 turn = False
-                gameState = None
             else:
+                gameState = 0
                 while gameState == 0:
-                    print("Waiting for %s to play..." % netName)
+                    print("\nWaiting for %s to play..." % netName)
                     userInput = network.receive()
                     if displayOpponentCommands == 1:
-                        print("%s tries: %s" % (netName, userInput))
+                        print("%s tries: %s\n\n" % (netName, userInput))
                     else:
                         print("%s entered a command" % netName)
                     gameState = game.inputToGame(userInput)
+                    print(gameState)
                 turn = True
-                gameState = None
 
         network.close()
-
+        input("Press ENTER to Exit")
+        sys.exit()
 
 if __name__ == "__main__":
     main()
