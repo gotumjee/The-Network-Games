@@ -19,31 +19,46 @@ CHESS_PRINT = {
 
 
 def distance(x1, y1, x2, y2):
-    """ Distance Function
-    This function takes two co-ordinates from a square game board: (x1, y1) & (x2, y2)
-    and finds the distance between them. The distance is based upon the number of cells
-    between the two given cells, including the destination cell. If the two cells are not
-    in a straight line, -1 is returned. If they are in a straight line, the distance is returned
+    """ Take two co-ordinates from a square game board: (x1, y1) & (x2, y2) and finds the distance between them.
+
+    The distance is based upon the number of cells between the two given cells, including the destination cell.
+    If the two cells are not in a straight line, -1 is returned. If they are in a straight line,
+    the distance is returned.
     """
+    # Input Sanitation
+    if (isinstance(x1, int) is not True or isinstance(y1, int) is not True or
+            isinstance(x2, int) is not True or isinstance(y2, int) is not True):
+        raise TypeError("Grid x and y values must be integers")
+    if x1 < 0 or y1 < 0 or x2 < 0 or y2 < 0:
+        raise TypeError("Grid x and y values must be within range of grid")
+
     x = abs(x1 - x2)
     y = abs(y1 - y2)
 
     if x == y:
+        # Straight Line
         return x
     elif (x == 0) or (y == 0):
+        # Diagonal Line
         return x+y
     else:
         return -1
 
 
 def direction(x1, y1, x2, y2):
-    """ Direction Function
-    This function takes two co-ordinates from a square game board: (x1, y1) & (x2, y2)
-    and finds the cardinal direction between them relative to (x1, y1). The direction is
-    returned. Note that the function does not check that those directions which are not
-    entirely north, south, east or west are exactly any other direction (for example NNW
-    becomes NW).
+    """ Take two co-ordinates from a square game board and finds the cardinal direction between them
+
+    The direction is returned and is the direction from (x1, y1) to (x2, y2). Note that the function does not check
+    that those directions which are not entirely north, south, east or west are exactly any other
+    direction (for example NNW becomes NW).
     """
+    # Input Sanitation
+    if (isinstance(x1, int) is not True or isinstance(y1, int) is not True or
+            isinstance(x2, int) is not True or isinstance(y2, int) is not True):
+        raise TypeError("Grid x and y values must be integers")
+    if x1 < 0 or y1 < 0 or x2 < 0 or y2 < 0:
+        raise TypeError("Grid x and y values must be within range of grid")
+    
     line = ""
     if y1 > y2:
         line += "N"
@@ -59,13 +74,13 @@ def direction(x1, y1, x2, y2):
 
 
 class Chess:
-    """ The Chess Class
-    This class a container for a game of chess and has two public
-    classes: "printBoard" and "inputToGame".  All other classes are
-    private and should not be accessed by code outside of the class.
-    """
+    """ Container for a game of chess """
 
     def __init__(self, fill=None):
+        """ Initialise the game
+
+        Fill sets the 'empty' space value for the board
+        """
         # Create the board.
         self.fill = fill
         self.board = Grid(8, 8, fill)
@@ -96,68 +111,97 @@ class Chess:
             print("")
 
     def inputToGame(self, stringIn):
-        """ The inputToGame function
-        The process for input to the game. Strings are inputted into the game
-        and are used to play/control the states.
+        """ The process for input to the game.
+
+        Strings are inputted into the game and are used to play/control the states. "r" will make the current player
+        resign; "cl" will attempt to castle left for the current player; and "cr" will attempt to castle right for the
+        current player. A set of two co-ordinates represents trying to move the piece at the first co-ordinate to the
+        location of the second.
         """
+        # Input Sanitation - Data Type
+        if not isinstance(stringIn, str):
+            self.printBoard()
+            return 0
 
         if stringIn.lower() == "r":
             # Choose to resign from the game.
             self.gameOver()
             return -1
-        elif stringIn.lower() == "cl" and self.castlingCheck()[0] == 1:
+        elif (stringIn.lower() == "cl" and self.castlingCheck()[0] == 1
+                and self.checkForCheck()[0] is False):
             # Castle left (relative to the player's view)
             if self.turn == 0:
+                # White
                 self.board.swapTwo(4, 7, 2, 7)
                 self.board.swapTwo(0, 7, 3, 7)
+                self.whiteCastling[2] = 0
             else:
+                # Black
                 self.board.swapTwo(4, 0, 2, 0)
                 self.board.swapTwo(0, 0, 3, 0)
+                self.blackCastling[2] = 0
+            self.printBoard()
+            self.turn = (self.turn + 1) % 2  # Alternates self.turn between 0 and 1. #
             return 1
-        elif stringIn.lower() == "cr" and self.castlingCheck()[1] == 1:
+        elif (stringIn.lower() == "cr" and self.castlingCheck()[1] == 1
+                and self.checkForCheck()[1] is False):
             # Castle right (relative to the player's view)
             if self.turn == 0:
+                # White
                 self.board.swapTwo(4, 7, 6, 7)
                 self.board.swapTwo(7, 7, 5, 7)
+                self.whiteCastling[2] = 0
             else:
+                # Black
                 self.board.swapTwo(4, 0, 6, 0)
                 self.board.swapTwo(7, 0, 5, 0)
+                self.blackCastling[2] = 0
+            self.printBoard()
+            self.turn = (self.turn + 1) % 2  # Alternates self.turn between 0 and 1. #
             return 1
 
         # Check each coordinate is valid
+        if len(stringIn) != 4:
+            return 0
+        
         for i in range(4):
             if (i % 2 == 0) and (stringIn[i] < "a" or stringIn[i] > "h"):
+                self.printBoard()
                 return 0
-            elif stringIn[i] < "1" or stringIn[i] > "8":
+            elif (i % 2 == 1) and (stringIn[i] < "1" or stringIn[i] > "8"):
+                self.printBoard()
                 return 0
 
         # Take each coordinate from input
         x1 = ord(stringIn[0]) - 97
         y1 = int(stringIn[1]) - 1
-        x2 = int(stringIn[2]) - 97
+        x2 = ord(stringIn[2]) - 97
         y2 = int(stringIn[3]) - 1
 
+        # Check whether it is possible to move the piece to the given location
         if self.validMove(x1, y1, x2, y2) == 1:
-            print("Move was valid! If your king is not in check")
             self.board.swapTwo(x1, y1, x2, y2)
             temp = self.board.getCellValue(x1, y1)
             self.board.setCellValue(x1, y1, self.fill)
 
             whiteCheck, blackCheck = self.checkForCheck()
 
-            if (self.turn == 0 and whiteCheck == 1) or (self.turn == 0 and blackCheck == 1):
+            if (self.turn == 0 and whiteCheck == 1) or (self.turn == 1 and blackCheck == 1):
+                # A player cannot move into check
                 print("You cannot put yourself into check.")
                 self.board.setCellValue(x1, y1, temp)
                 self.board.swapTwo(x1, y1, x2, y2)
 
+                self.printBoard()
                 return 0
             else:
                 if whiteCheck == 1 or blackCheck == 1:
+                    # Announcing when a player is in check
                     print("Check!")
                 self.turn = (self.turn + 1) % 2  # Alternates self.turn between 0 and 1. #
                 self.pawnPromote()
 
-                # Tracking which rooks have moved (for Castling)
+                # Tracking whether a rook has moved this turn (for Castling)
                 if x1 == 0 and y1 == 0:
                     self.blackCastling[0] = 0
                 elif x1 == 7 and y1 == 0:
@@ -167,39 +211,55 @@ class Chess:
                 elif x1 == 7 and y1 == 7:
                     self.whiteCastling[1] = 0
 
-                # Tracking which kings have moved
+                # Tracking whether a king has moved this turn (for Castling)
                 elif x1 == 4 and y1 == 0:
                     self.blackCastling[2] = 0
                 elif x1 == 4 and y1 == 7:
                     self.whiteCastling[2] = 0
 
+                self.printBoard()
                 return 1
 
         else:
+            self.printBoard()
             return 0
 
-    # Find the closest (if any) piece in a given direction from another piece
     def findInterceptPiece(self, x, y, line):
-        print("findInterceptPiece being run!\nx="+str(x)+", y="+str(y)+", line = "+line)
+        # Find the closest (if any) piece in a given direction from another piece
+        # Input Sanitation
+        if (isinstance(x, int) is not True or isinstance(y, int) is not True or
+                isinstance(line, str) is not True):
+            raise TypeError("Intercept x and y values must be integers and line must be string")
+        if x < 0 or x > 7 or y < 0 or y > 7:
+            raise TypeError("Grid x and y values must be within range of grid")
+        for char in line:
+            if char not in ["N", "S", "E", "W"]:
+                raise TypeError("Intercept line value contains invalid direction value")
+
+        # Find which direction to step in from line string
         xStep = 0
         yStep = 0
 
         if "N" in line:
             yStep = -1
         if "S" in line:
+            if yStep == -1:
+                raise TypeError("Intercept line value contains conflicting directions")
             yStep = 1
         if "E" in line:
             xStep = 1
         if "W" in line:
+            if xStep == 1:
+                raise TypeError("Intercept line value contains conflicting directions")
             xStep = -1
 
         x += xStep
         y += yStep
         distanceAway = 1
 
+        # Step until a piece is found (or lack of piece)
         while (x in range(8)) and (y in range(8)):
             if self.board.getCellValue(x, y) != self.fill:
-                print("distanceAway="+str(distanceAway))
                 return distanceAway, self.getPieceNumber(x, y)
             x += xStep
             y += yStep
@@ -207,22 +267,27 @@ class Chess:
 
         return -1, -1
 
-    # Checking a move is valid. Returns boolean
     def validMove(self, x1, y1, x2, y2):
-        print("validMove has been executed")
-        # Check that the coordinates differ
+        # Checking a move is valid. Returns boolean
+        # Input Sanitation
+        if (isinstance(x1, int) is not True or isinstance(y1, int) is not True or
+                isinstance(x2, int) is not True or isinstance(y2, int) is not True):
+            raise TypeError("Movement x and y values must be integers")
+        if x1 < 0 or x1 > 7 or y1 < 0 or y1 > 7 or x2 < 0 or x2 > 7 or y2 < 0 or y2 > 7:
+            print("You've specified a location off-board")
+            return 0
         if x1 == x2 and y1 == y2:
-            print("x1 == x2, y1 == y2")
+            print("You have not moved")
             return 0
 
+        # Consideration for boards with non-default empty space value
         if self.fill is None:
             fill = -1
         else:
             fill = ord(self.fill)
 
-        # Get the items at the coordinates
+        # Get the pieces (if any) at the coordinates
         piece = self.getPieceNumber(x1, y1)
-        print(piece)
         dest = self.getPieceNumber(x2, y2)
 
         if piece == -1:
@@ -232,18 +297,16 @@ class Chess:
         # Check whether the correct colour of piece is trying to move. Also check that if a piece would be taken,
         # it is not their own piece:
         # White Piece
-        print(piece, self.turn, dest)
         if 9812 <= piece <= 9817 and (self.turn == 1 or (9812 <= dest <= 9817)):
             print("The piece is white and (it's black's turn or you'd be taking a white piece)")
             return 0
         # Black Piece
-        elif 9818 <= piece <= 9823 and (self.turn == 0 or (9812 <= dest <= 9817)):
+        elif 9818 <= piece <= 9823 and (self.turn == 0 or (9818 <= dest <= 9823)):
             print("The piece is black and (it's white's turn or you'd be taking a black piece)")
             return 0
 
         # Check whether the piece can get to its destination
         if piece == 9812 or piece == 9818:
-            print("It's a king")
             # King
             # Check the movement has a distance of only 1
             if distance(x1, y1, x2, y2) == 1:
@@ -260,53 +323,47 @@ class Chess:
             return 0
 
         elif piece == 9813 or piece == 9819:
-            # The piece is a queen
-            print("It's a queen")
+            # Queen
             # Check the movement is a straight line in some direction.
             if (x1 == x2) or (y1 == y2) or ((x2-x1) == (y2-y1)):
                 # Find which straight line needs to be checked for pieces.
                 line = direction(x1, y1, x2, y2)
-
+    
                 # Ensure there is no piece blocking the path of the queen.
-                if distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0]:
+                if (distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0] or
+                        self.findInterceptPiece(x1, y1, line)[0] == -1):
                     return 1
 
             return 0
 
         elif piece == 9814 or piece == 9820:
-            # The piece is a rook.
-            print("It's a rook")
-
-            # Check the movement is either north, south, east or west
-            # (i.e. not diagonal).
+            # Rook
+            # Check the movement is either north, south, east or west (i.e. not diagonal).
             if (x1 == x2) or (y1 == y2):
                 line = direction(x1, y1, x2, y2)
-
                 # Ensure there is no piece blocking the path of the rook.
-                if distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0]:
+                if (distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0] or
+                        self.findInterceptPiece(x1, y1, line)[0] == -1):
                     return 1
 
             return 0
 
         elif piece == 9815 or piece == 9821:
-            # The piece is a bishop.
-            print("It's a bishop")
-
+            # Bishop
             # Check the movement is diagonal.
             if (x2-x1) == (y2-y1):
                 # Find which diagonal line
                 line = direction(x1, y1, x2, y2)
-
                 # Ensure there is no piece blocking the path of the bishop
-                if distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0]:
+                if (distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0] or
+                        self.findInterceptPiece(x1, y1, line)[0] == -1):
                     return 1
 
             return 0
 
         elif piece == 9816 or piece == 9822:
             # Knight
-            print("It's a knight")
-            # Check the movement is value (2 in one, 1 in another)
+            # Check the movement is valid (2 in one direction, 1 in a perpendicular direction)
             if (abs(x2-x1) == 1 and abs(y2-y1) == 2) or (abs(x2-x1) == 2 and abs(y2-y1) == 1):
                 return 1
 
@@ -314,13 +371,12 @@ class Chess:
 
         elif piece == 9817 or piece == 9823:
             # Pawn
-            print("It's a pawn")
-            # Check the movement is only one square
+            # Check if movement is only one square
             if distance(x1, y1, x2, y2) == 1:
                 if piece == 9817:
                     # White
                     if x1 == x2 and y1-1 == y2:
-                        # Move forward
+                        # Moving forward
                         if dest == -1:
                             return 1
                     elif abs(x2-x1) == 1 and y1-1 == y2:
@@ -331,25 +387,29 @@ class Chess:
                 else:
                     # Black
                     if x1 == x2 and y1+1 == y2:
-                        # Move forward
+                        # Moving forward
                         if dest == -1:
                             return 1
                     elif abs(x2-x1) == 1 and y1+1 == y2:
                         # Take a piece if it is white
-                        if 9818 <= dest <= 9823:
+                        if 9812 <= dest <= 9817:
                             return 1
 
-            # Check the piece hasn't moved yet
-            elif distance(x1, y1, x2, y2) == 2:
-                # White
-                if piece == 9817 and y1 == 6:
-                    if x1 == x2 and y1-2 == y2 and self.getPieceNumber(x1, y1-1) == dest == fill:
-                        return 1
-                # Black
-                elif y1 == 1:
-                    if x1 == x2 and y1+2 == y2 and self.getPieceNumber(x1, y1+1) == dest == fill:
-                        return 1
+                return 0
 
+            # Check if instead the movement is of two spaces
+            elif distance(x1, y1, x2, y2) == 2:
+                if piece == 9817 and y1 == 6:
+                    # White and hasn't moved
+                    if x1 == x2 and y1-2 == y2 and self.getPieceNumber(x1, y1-1) == dest == fill:
+                        # Movement is forward, of two spaces and there are no pieces in the path of the pawn
+                        return 1
+                elif y1 == 1:
+                    # Black and hasn't moved
+                    if x1 == x2 and y1+2 == y2 and self.getPieceNumber(x1, y1+1) == dest == fill:
+                        # Movement is forward, of two spaces and there are no pieces in the path of the pawn
+                        return 1
+                return 0
             else:
                 return 0
 
@@ -358,22 +418,22 @@ class Chess:
             print("It's nothing?")
             return 0
 
-        print("Somethings wrong")
-        return 0
-
     def getPieceNumber(self, x, y):
+        # Retrieve the ordinal value of pieces on the board.
+        # Input Sanitation
+        if isinstance(x, int) is not True or isinstance(y, int) is not True:
+            raise TypeError("Grid x and y values must be integers")
         if x < 0 or x > 7 or y < 0 or y > 7:
             return -1
+        
         elif self.board.getCellValue(x, y) is None:
             return -1
         else:
             return ord(self.board.getCellValue(x, y))
 
     def checkForCheck(self):
-        """The checkForCheck function.
-
-        This function is used to determine whether either (or both)
-        kings are in check.
+        """ Determine whether either (or both) kings are in check.
+        
         Each cardinal direction is checked to find which (if any)
         is closest in that line.  If the piece is owned by the
         opponent and could take the king if it were to move, the
@@ -463,7 +523,7 @@ class Chess:
         if blackCheck is False:
             for kx in [-2, -1, 1, 2]:
                 for ky in [-2, -1, 1, 2]:
-                    if abs(x) == abs(y):
+                    if abs(kx) == abs(ky):
                         continue
 
                     if self.getPieceNumber(x+kx, y+ky) == 9816:
@@ -478,13 +538,14 @@ class Chess:
         return whiteCheck, blackCheck
 
     def pawnPromote(self):
+        # Promote any pawns to queens when at the end of the board
         for whiteBlack in [(0, 9817, "♕"), (7, 9823, "♛")]:
             for x in range(8):
                 if self.getPieceNumber(x, whiteBlack[0]) == whiteBlack[1]:
                     self.board.setCellValue(x, whiteBlack[0], whiteBlack[2])
 
     def castlingCheck(self):
-
+        # Check whether the current player can castle left or right
         # Check which players turn it is
         if self.turn == 0:
             # White
@@ -508,10 +569,9 @@ class Chess:
                      ((5, 7), (6, 7))
                      )
 
-            for leftRight in range(1):
+            for leftRight in range(2):
                 for xy in swaps[leftRight]:
                     self.board.swapTwo(xy[0], xy[1], 4, 7)
-
                     if self.checkForCheck()[0] == 1:
                         if leftRight == 0:
                             left = 0
@@ -544,7 +604,7 @@ class Chess:
                      ((5, 0), (6, 0))
                      )
 
-            for leftRight in range(1):
+            for leftRight in range(2):
                 for xy in swaps[leftRight]:
                     self.board.swapTwo(xy[0], xy[1], 4, 0)
 
@@ -559,6 +619,7 @@ class Chess:
             return left, right
 
     def gameOver(self):
+        # Explain the outcome of the game
         whiteCheck, blackCheck = self.checkForCheck()
 
         if self.turn == 1 and blackCheck == 1:
@@ -567,6 +628,7 @@ class Chess:
             print("Black wins!")
         else:
             print("Stalemate or Resignation! No winner.")
+
 
 def main():
     a = Chess()
