@@ -1,14 +1,16 @@
-from network import *
-from chess import *
-from noughtsandcrosses import *
-from chat import *
-from requests import get
-from time import sleep
 import sys
 import time
 import os
 import shutil
 import threading
+from requests import get
+from time import sleep
+
+from network import *
+from chess import *
+from battleships import *
+from noughtsandcrosses import *
+from chat import *
 
 network = Network_sockets()
 
@@ -32,12 +34,14 @@ def typewriter(message):
 
 
 def main():
+    """ Runs the main program. """
     width = (shutil.get_terminal_size())[0]
     clear()
 
     print("Network Game Symposium".center(width))
     print("\n\n")
 
+    # Main program loop.
     sleep(1)
     while True is True:
         usr = 0
@@ -48,6 +52,7 @@ def main():
         displayOpponentCommands = None
 
         while True is True:
+            # Input menu loop
             usr = input("1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ")
             if usr == "1":
                 gameChoice = "0"
@@ -58,12 +63,13 @@ def main():
                     game = Chess()
                     displayOpponentCommands = 1
                 elif gameChoice == 2:
-                    # game = battleships(1)
+                    game = Battleships(1)
                     displayOpponentCommands = 0
                 else:
                     game = NoughtsAndCrosses()
                     displayOpponentCommands = 1
 
+                # Create network connection
                 ip = get("https://api.ipify.org").text
                 print("Your public IP address is: ", ip)
                 sleep(1)
@@ -86,6 +92,7 @@ def main():
                 continue
 
         if usr == "1":
+            # Player 1 (Player making connection)
             turn = True
 
             network.send(gameChoice)
@@ -109,6 +116,7 @@ def main():
                 input("Press ENTER to continue ")
 
         elif usr == "2":
+            # Player 2 (Connecting Player)
             turn = False
 
             gameChoice = network.receive()
@@ -134,11 +142,24 @@ def main():
             input("Press ENTER to continue ")
 
         print("Opening chat...")
-        #open the chat window
+        # open the chat window
         threading.Thread(target=open_chat, args=(localName, usr)).start()
-        
+
         gameState = None
 
+        # Game Explanations
+        if gameChoice == 1:
+            print("Welcome to Chess. Enter 'r' to resign, 'cl' and 'cr' to castle left or right (respectively) or a",
+                  "set of co-ordinates in the form 'a1a1' to move a piece.")
+            game.printBoard()
+        elif gameChoice == 2:
+            # Battleships instructions
+            pass
+        else:
+            # Noughts and Crosses instructions
+            pass
+
+        # Game play loop
         while gameState != -1:
             if turn is True:
                 while gameState == 0:
@@ -160,6 +181,7 @@ def main():
                 gameState = None
 
         network.close()
+
 
 if __name__ == "__main__":
     main()
