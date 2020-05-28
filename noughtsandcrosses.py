@@ -23,13 +23,17 @@ class NoughtsAndCrosses():
         #split input into x coord and y coord
         input_list = input_string.split()
 
+        if(len(input_list) != 2):
+            print("Please enter coordinates in the form \"x y\".")
+            return 0
+
         #check that the cell is not already occupied
         if(self.grid.getCellValue(int(input_list[1]), int(input_list[0])) != ' '):
             print("Cell is already occupied.")
             return 0
         #check that the numbers are within the correct range
         if(int(input_list[0]) not in range(3) and int(input_list[1]) not in range(3)):
-            print("Enter a number in the range 1 to 3.")
+            print("Enter a number in the range 0 to 2.")
             return 0
 
         #set the value of the cell
