@@ -22,7 +22,6 @@ class NoughtsAndCrosses():
     def inputToGame(self, input_string):
         #split input into x coord and y coord
         input_list = input_string.split()
-        print(input_list)
 
         #check that the cell is not already occupied
         if(self.grid.getCellValue(int(input_list[1]), int(input_list[0])) != ' '):
