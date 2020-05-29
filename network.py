@@ -27,12 +27,14 @@ class Network_sockets:
         self.hosting = False
 
     def host(self):
-        #wait for incoming connection
+        # Wait for incoming connection
         self.hosting = True
         self.sock.bind(('',self.port))
         self.sock.listen(5)
         self.conn, self.addr = self.sock.accept()
-        print("Received a connection from ", self.addr)
+        
+        # Debug Code
+        # print("Received a connection from ", self.addr)
 
     def connect(self, ip_addr):
         self.sock.connect((ip_addr, self.port))
