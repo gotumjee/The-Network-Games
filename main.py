@@ -49,7 +49,7 @@ def main():
         gameChoice = None
         displayOpponentCommands = None
         localName = None
-        ip_addr = None
+        opp_ip_addr = None
 
         while True is True:
             # Input menu loop
