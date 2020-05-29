@@ -164,7 +164,7 @@ def main():
             print("Welcome to Battleships. Enter in the format \"row, column, orientation\" to place your ships.",
             " To strike a ship, enter in the format \"row, column\". You can enter 'r' to resign at any time.")
         else:
-            # Noughts and Crosses instructions
+            print("Welcome to Noughts And Crosses. Enter in the format \"x y\" to place a mark at those coordinates. x and y must be an integer in the range (0 -2).")
             pass
 
         # Game play loop
