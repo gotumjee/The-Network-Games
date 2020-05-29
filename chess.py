@@ -58,7 +58,7 @@ def direction(x1, y1, x2, y2):
         raise TypeError("Grid x and y values must be integers")
     if x1 < 0 or y1 < 0 or x2 < 0 or y2 < 0:
         raise TypeError("Grid x and y values must be within range of grid")
-    
+
     line = ""
     if y1 > y2:
         line += "N"
@@ -163,7 +163,7 @@ class Chess:
         # Check each coordinate is valid
         if len(stringIn) != 4:
             return 0
-        
+
         for i in range(4):
             if (i % 2 == 0) and (stringIn[i] < "a" or stringIn[i] > "h"):
                 self.printBoard()
@@ -328,7 +328,7 @@ class Chess:
             if (x1 == x2) or (y1 == y2) or ((x2-x1) == (y2-y1)):
                 # Find which straight line needs to be checked for pieces.
                 line = direction(x1, y1, x2, y2)
-    
+
                 # Ensure there is no piece blocking the path of the queen.
                 if (distance(x1, y1, x2, y2) <= self.findInterceptPiece(x1, y1, line)[0] or
                         self.findInterceptPiece(x1, y1, line)[0] == -1):
@@ -425,7 +425,7 @@ class Chess:
             raise TypeError("Grid x and y values must be integers")
         if x < 0 or x > 7 or y < 0 or y > 7:
             return -1
-        
+
         elif self.board.getCellValue(x, y) is None:
             return -1
         else:
@@ -433,7 +433,7 @@ class Chess:
 
     def checkForCheck(self):
         """ Determine whether either (or both) kings are in check.
-        
+
         Each cardinal direction is checked to find which (if any)
         is closest in that line.  If the piece is owned by the
         opponent and could take the king if it were to move, the
@@ -628,14 +628,3 @@ class Chess:
             print("Black wins!")
         else:
             print("Stalemate or Resignation! No winner.")
-
-
-def main():
-    a = Chess()
-    while True:
-        a.printBoard()
-        a.inputToGame(input(""))
-
-
-if __name__ == "__main__":
-    main()

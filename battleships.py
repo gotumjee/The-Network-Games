@@ -96,6 +96,7 @@ class Battleships:
         # used to place the ships based off inputs provided by the user
         if(self.__usr == 1 and self.__boardSetup == 1):
 
+            self.__boardSetup = 2
             if(self.__count == 1):
 
                 print("Placing Carrier ships now")
@@ -109,7 +110,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 2):
+            elif(self.__count == 3):
 
                 print("Placing Battleships now")
                 if(self.__placement(self.__p1_board, row, column, orientation, 'B') == 0):
@@ -122,7 +123,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 3):
+            elif(self.__count == 5):
 
                 print("Placing Destroyer ships now")
                 if(self.__placement(self.__p1_board, row, column, orientation, 'D') == 0):
@@ -135,7 +136,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 4):
+            elif(self.__count == 7):
 
                 print("Placing Submarines now")
                 if(self.__placement(self.__p1_board, row, column, orientation, 'S') == 0):
@@ -148,7 +149,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 5):
+            elif(self.__count == 9):
 
                 print("Placing Patrol boats now")
                 if(self.__placement(self.__p1_board, row, column, orientation, 'P') == 0):
@@ -166,6 +167,7 @@ class Battleships:
 
         if(self.__usr == 2 and self.__boardSetup == 1):
 
+            self.__boardSetup = 2
             if(self.__count == 1):
                 if(self.__placement(self.__p1_board, row, column, orientation, 'C') == 0):
                     return -1
@@ -174,7 +176,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 2):
+            elif(self.__count == 3):
                 if(self.__placement(self.__p1_board, row, column, orientation, 'B') == 0):
                     return -1
 
@@ -182,7 +184,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 3):
+            elif(self.__count == 5):
                 if(self.__placement(self.__p1_board, row, column, orientation, 'D') == 0):
                     return -1
 
@@ -190,7 +192,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 4):
+            elif(self.__count == 7):
                 if(self.__placement(self.__p1_board, row, column, orientation, 'S') == 0):
                     return -1
 
@@ -198,7 +200,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 5):
+            elif(self.__count == 9):
                 if(self.__placement(self.__p1_board, row, column, orientation, 'P') == 0):
                     return -1
 
@@ -211,7 +213,8 @@ class Battleships:
 
         if(self.__usr == 2 and self.__boardSetup == 2):
 
-            if(self.__count == 6):
+            self.__boardSetup = 1
+            if(self.__count == 2):
 
                 print("Placing Carrier ships now")
                 if(self.__placement(self.__p2_board, row, column, orientation, 'C') == 0):
@@ -224,7 +227,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 7):
+            elif(self.__count == 4):
 
                 print("Placing Battleships now")
                 if(self.__placement(self.__p2_board, row, column, orientation, 'B') == 0):
@@ -237,7 +240,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 8):
+            elif(self.__count == 6):
 
                 print("Placing Destroyer ships now")
                 if(self.__placement(self.__p2_board, row, column, orientation, 'D') == 0):
@@ -250,7 +253,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 9):
+            elif(self.__count == 8):
 
                 print("Placing Submarines now")
                 if(self.__placement(self.__p2_board, row, column, orientation, 'S') == 0):
@@ -281,7 +284,8 @@ class Battleships:
 
         if(self.__usr == 1 and self.__boardSetup == 2):
 
-            if(self.__count == 6):
+            self.__boardSetup = 1
+            if(self.__count == 2):
                 if(self.__placement(self.__p2_board, row, column, orientation, 'C') == 0):
                     return -1
 
@@ -289,7 +293,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 7):
+            elif(self.__count == 4):
                 if(self.__placement(self.__p2_board, row, column, orientation, 'B') == 0):
                     return -1
 
@@ -297,7 +301,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 8):
+            elif(self.__count == 6):
                 if(self.__placement(self.__p2_board, row, column, orientation, 'D') == 0):
                     return -1
 
@@ -305,7 +309,7 @@ class Battleships:
                 self.__count += 1
                 return 0
 
-            elif(self.__count == 9):
+            elif(self.__count == 8):
                 if(self.__placement(self.__p2_board, row, column, orientation, 'S') == 0):
                     return -1
 

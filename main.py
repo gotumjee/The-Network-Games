@@ -42,7 +42,7 @@ def main():
     print("\n\n")
 
     # Main program loop.
-    sleep(1)
+    time.sleep(1)
     while True is True:
         usr = 0
         turn = None
@@ -57,8 +57,8 @@ def main():
             usr = input("1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ")
             if usr == "1":
                 gameChoice = "0"
-                while gameChoice < "1" or gameChoice > "3":
-                    gameChoice = input("\n\n1. Chess.\n2. Battleships.\n3. Noughts and Crosses.\n\nEnter your choice: ")
+                while gameChoice < "1" or gameChoice > "4":
+                    gameChoice = input("\n\n1. Chess.\n2. Battleships.\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ")
 
                 if gameChoice == "1":
                     game = Chess()
@@ -66,14 +66,21 @@ def main():
                 elif gameChoice == "2":
                     game = Battleships(1)
                     displayOpponentCommands = 0
-                else:
+                elif gameChoice == "3":
                     game = NoughtsAndCrosses()
                     displayOpponentCommands = 1
-
+                elif gameChoice == "4":
+                    clear()
+                    continue
+                else:
+                    print("Please enter one of the above options..")
+                    time.sleep(3)
+                    clear()
+                    continue
                 # Create network connection
                 ip = get("https://api.ipify.org").text
                 print("Your public IP address is: ", ip)
-                sleep(1)
+                time.sleep(1)
                 typewriter("Waiting for a connection...\n")
                 network.host()
                 break
@@ -88,7 +95,7 @@ def main():
 
             else:
                 print("Please enter one of the above options..")
-                sleep(3)
+                time.sleep(3)
                 clear()
                 continue
 
@@ -99,7 +106,7 @@ def main():
             network.send(gameChoice)
 
             localName = str(input("Enter your name: "))
-            sleep(0.1)
+            time.sleep(0.1)
             network.send(localName)
             netName = network.receive()
             clear()
@@ -133,12 +140,12 @@ def main():
 
             localName = str(input("Enter your name: "))
             netName = network.receive()
-            sleep(0.1)
+            time.sleep(0.1)
             network.send(localName)
-            sleep(0.1)
+            time.sleep(0.1)
             network.send(0)
             clear()
-            sleep(0.1)
+            time.sleep(0.1)
             network.send(1)
             input("Press ENTER to continue ")
 
@@ -154,8 +161,8 @@ def main():
                   "set of co-ordinates in the form 'a1a1' to move a piece.")
             game.printBoard()
         elif gameChoice == "2":
-            # Battleships instructions
-            pass
+            print("Welcome to Battleships. Enter in the format \"row, column, orientation\" to place your ships.",
+            " To strike a ship, enter in the format \"row, column\". You can enter 'r' to resign at any time.")
         else:
             # Noughts and Crosses instructions
             pass
@@ -166,7 +173,7 @@ def main():
             if turn is True:
                 gameState = 0
                 while gameState == 0:
-                    userInput = input("\nIt's your turn!: ")
+                    userInput = input("\nIt's your turn!\nEnter your input: ")
                     print("\n")
                     network.send(userInput)
                     gameState = game.inputToGame(userInput)
@@ -181,7 +188,8 @@ def main():
                     else:
                         print("%s entered a command" % netName)
                     gameState = game.inputToGame(userInput)
-                    print(gameState)
+                    #print(gameState)
+                    #used for debugging purposes
                 turn = True
 
         network.close()
