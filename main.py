@@ -1,12 +1,10 @@
-import sys
 import os
 import shutil
-import threading
 import time
+import multiprocessing
 
 from requests import get
 
-from network import *
 from chess import *
 from battleships import *
 from noughtsandcrosses import *
@@ -51,6 +49,7 @@ def main():
         gameChoice = None
         displayOpponentCommands = None
         localName = None
+        ip_addr = None
 
         while True is True:
             # Input menu loop
@@ -58,7 +57,8 @@ def main():
             if usr == "1":
                 gameChoice = "0"
                 while gameChoice < "1" or gameChoice > "4":
-                    gameChoice = input("\n\n1. Chess.\n2. Battleships.\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ")
+                    gameChoice = input("\n\n1. Chess.\n2. Battleships."
+                                       + "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ")
 
                 if gameChoice == "1":
                     game = Chess()
@@ -78,16 +78,19 @@ def main():
                     clear()
                     continue
                 # Create network connection
-                ip = get("https://api.ipify.org").text
-                print("Your public IP address is: ", ip)
+                ip_addr = get("https://api.ipify.org").text
+                print("Your public IP address is: ", ip_addr)
                 time.sleep(1)
                 typewriter("Waiting for a connection...\n")
                 network.host()
+                opp_ip_addr = network.receive()
                 break
 
             elif usr == "2":
-                ip_addr = input("Enter the IP address: ")
-                network.connect(ip_addr)
+                opp_ip_addr = input("Enter the IP address: ")
+                ip_addr = get("https://api.ipify.org").text
+                network.connect(opp_ip_addr)
+                network.send(ip_addr)
                 break
 
             elif usr == "3":
@@ -151,9 +154,8 @@ def main():
 
         print("Opening chat...")
         # open the chat window
-        threading.Thread(target=open_chat, args=(localName, usr)).start()
-        print("I'm here")
-        gameState = 0
+        chat = multiprocessing.Process(target=open_chat, args=(localName, usr, opp_ip_addr))
+        chat.start()
 
         # Game Explanations
         if gameChoice == "1":
@@ -161,11 +163,11 @@ def main():
                   "set of co-ordinates in the form 'a1a1' to move a piece.")
             game.printBoard()
         elif gameChoice == "2":
-            print("Welcome to Battleships. Enter in the format \"row, column, orientation\" to place your ships.",
-            " To strike a ship, enter in the format \"row, column\". You can enter 'r' to resign at any time.")
+            print("Welcome to Battleships. Enter in the format 'row, column, orientation' to place your ships.",
+                  "To strike a ship, enter in the format 'row, column'. You can enter 'r' to resign at any time.")
         else:
-            print("Welcome to Noughts And Crosses. Enter in the format \"x y\" to place a mark at those coordinates. x and y must be an integer in the range (0 -2).")
-            pass
+            print("Welcome to Noughts And Crosses. Enter in the format 'x y' to place a mark at those coordinates.",
+                  "x and y must be an integer in the range (0-2).")
 
         # Game play loop
         gameState = 0
@@ -188,13 +190,16 @@ def main():
                     else:
                         print("%s entered a command" % netName)
                     gameState = game.inputToGame(userInput)
-                    #print(gameState)
-                    #used for debugging purposes
+
+                    # Used for debug
+                    # print(gameState)
                 turn = True
 
         network.close()
         input("Press ENTER to Exit")
+        chat.terminate()
         sys.exit()
+
 
 if __name__ == "__main__":
     main()
