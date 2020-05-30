@@ -382,8 +382,8 @@ class Battleships:
                 self.__p2_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p2_board, self.__p2_play)
-                self.__displaydown(shipsdownval)
                 self.__display(self.__p2_play)
+                self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYou go again.")
                 return -1
@@ -405,8 +405,8 @@ class Battleships:
                 self.__p1_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p1_board, self.__p1_play)
-                self.__displaydown(shipsdownval)
                 self.__display(self.__p1_play)
+                self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYour opponent goes again.")
                 return -1
@@ -428,8 +428,8 @@ class Battleships:
                 self.__p2_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p2_board, self.__p2_play)
-                self.__displaydown(shipsdownval)
                 self.__display(self.__p2_play)
+                self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYour opponent goes again.")
                 return -1
@@ -452,8 +452,8 @@ class Battleships:
                 self.__p1_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p1_board, self.__p1_play)
-                self.__displaydown(shipsdownval)
                 self.__display(self.__p1_play)
+                self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYou go again.")
                 return -1
@@ -563,7 +563,7 @@ class Battleships:
         # facilitates the games main code and is used to control the games
         # various states
         orientation = None
-        
+
         if self.__checkwin(userInput) == -1:
             return -1
 
