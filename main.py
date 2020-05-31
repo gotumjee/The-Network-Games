@@ -24,7 +24,7 @@ def clear():
 def typewriter(message, speed):
     """ A display function. Writes each character with a delay"""
     for char in message:
-        print(char, end='', flush = True)
+        print(char, end='', flush=True)
         if char == '\n':
             time.sleep(speed * 3)
         time.sleep(speed)
@@ -53,62 +53,117 @@ def main():
 
         while True is True:
             # Input menu loop
-            typewriter("1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ", 0.01)
+            typewriter(
+                "1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ",
+                0.01)
             usr = input()
             if usr == "1":
+                while (1):
+                    typewriter(
+                        "Enter a password for the game (leave blank for no password): ", 0.01)
+                    if(network.setpassword(input()) == -1):
+                        typewriter(
+                            "The password is too long..\nPlease try a shorter password.", 0.03)
+                        time.sleep(3)
+                        clear()
+                        continue
+                    typewriter("The password has been set!", 0.01)
+                    time.sleep(2)
+                    clear()
+                    break
+
                 gameChoice = "0"
-                while gameChoice < "1" or gameChoice > "4":
-                    typewriter("\n\n1. Chess.\n2. Battleships." +
-                               "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ", 0.01)
+                while (1):
+                    typewriter(
+                        "Which game would you like to play?\n\n1. Chess.\n2. Battleships." +
+                        "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ",
+                        0.01)
                     gameChoice = input()
-                if gameChoice == "1":
-                    game = Chess()
-                    displayOpponentCommands = 1
-                elif gameChoice == "2":
-                    game = Battleships(1)
-                    displayOpponentCommands = 0
-                elif gameChoice == "3":
-                    game = NoughtsAndCrosses()
-                    displayOpponentCommands = 1
-                elif gameChoice == "4":
-                    clear()
-                    continue
-                else:
-                    typewriter("Please enter one of the above options..", 0.03)
-                    time.sleep(3)
-                    clear()
-                    continue
+                    if gameChoice == "1":
+                        game = Chess()
+                        displayOpponentCommands = 1
+                    elif gameChoice == "2":
+                        game = Battleships(1)
+                        displayOpponentCommands = 0
+                    elif gameChoice == "3":
+                        game = NoughtsAndCrosses()
+                        displayOpponentCommands = 1
+                    elif gameChoice == "4":
+                        main()
+                        continue
+                    else:
+                        typewriter(
+                            "Please enter one of the above options..", 0.03)
+                        time.sleep(3)
+                        clear()
+                        continue
+                    break
                 # Create network connection
                 try:
                     ip_addr = requests.get("https://api.ipify.org").text
                     typewriter("Your public IP address is: " + ip_addr, 0.03)
-                except:
+                except BaseException:
                     ip_addr = "127.0.0.1"
-                    typewriter("Your public IP address is currently unknown..\nUsing localhost.", 0.03)
+                    typewriter(
+                        "Your public IP address is currently unknown..\nUsing localhost.", 0.03)
 
-                typewriter("\nWaiting for a connection... \n", 0.03)
+                typewriter("\nWaiting for a connection...", 0.03)
                 network.host()
+                while(1):
+                    network.send(1)
+                    try:
+                        if(network.receive() == str(1)):
+                            break
+                    except UnicodeDecodeError:
+                        continue
                 opp_ip_addr = network.receive()
+                clear()
                 break
 
             elif usr == "2":
-                typewriter("Enter the IP address: ", 0.03)
+                typewriter(
+                    "Enter the IP address (or enter \'r\' to go back): ", 0.03)
                 opp_ip_addr = input()
+                if(opp_ip_addr == 'r'):
+                    main()
                 try:
                     ip_addr = requests.get("https://api.ipify.org").text
-                except:
+                except BaseException:
                     ip_addr = "127.0.0.1"
                 try:
                     network.connect(opp_ip_addr)
-                    network.send(ip_addr)
                 except KeyboardInterrupt:
                     return
                 except ConnectionRefusedError:
                     typewriter(
                         "\nUnexpected error. Please check the IP address and try again.", 0.03)
                     time.sleep(2)
-                    clear()
                     main()
+                while (1):
+                    typewriter(
+                        "Enter the password assigned by the host (leave blank if there's no password): ",
+                        0.01)
+                    network.setpassword(input())
+                    network.send(1)
+                    try:
+                        if(network.receive() == str(1)):
+                            typewriter("You have the right password!", 0.01)
+                        else:
+                            typewriter(
+                                "\nThe password's incorrect..\nPlease double-check with the host.", 0.03)
+                            time.sleep(3)
+                            clear()
+                            continue
+                    except UnicodeDecodeError:
+                        typewriter(
+                            "\nThe password's incorrect..\nPlease double-check with the host.", 0.03)
+                        time.sleep(3)
+                        clear()
+                        continue
+                    network.send(ip_addr)
+                    time.sleep(1)
+                    clear()
+                    break
                 break
 
             elif usr == "3":
@@ -117,7 +172,7 @@ def main():
             else:
                 typewriter("Please enter one of the above options..", 0.03)
                 time.sleep(3)
-                clear()
+                main()
                 continue
 
         if usr == "1":
@@ -160,7 +215,8 @@ def main():
                 typewriter("Enter your name: ", 0.03)
                 localName = str(input())
                 if not localName:
-                    typewriter("\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
+                    typewriter(
+                        "\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
                     time.sleep(1)
                     continue
                 else:

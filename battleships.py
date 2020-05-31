@@ -62,7 +62,7 @@ class Battleships:
         elif board[row][column] == 7:
             return str('*')
 
-    def display(self, board = [[0] * 10 for _ in range(10)]):
+    def display(self, board=[[0] * 10 for _ in range(10)]):
         # used to display the board with the necessary formatting
         row = 0  # represents each rows
         # prints the line numbers horizontally
@@ -70,7 +70,8 @@ class Battleships:
 
         for i in range(21):
             if i % 2 == 0:
-                print("   +---+---+---+---+---+---+---+---+---+---+", end='\n')  # prints the border for the grid
+                print("   +---+---+---+---+---+---+---+---+---+---+",
+                      end='\n')  # prints the border for the grid
 
             else:  # prints the line number vertically with appropriate spacing
                 if((i // 2) + 1) != 10:
@@ -105,8 +106,14 @@ class Battleships:
             if self.__count == 1:
 
                 print("Placing Carrier ships now")
-                if self.__placement(self.__p1_board, row, column, orientation, 'C') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'C') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("The ships have been placed.\n")
@@ -117,8 +124,14 @@ class Battleships:
             elif self.__count == 3:
 
                 print("Placing Battleships now")
-                if self.__placement(self.__p1_board, row, column, orientation, 'B') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'B') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("The ships have been placed.\n")
@@ -129,8 +142,14 @@ class Battleships:
             elif self.__count == 5:
 
                 print("Placing Destroyer ships now")
-                if self.__placement(self.__p1_board, row, column, orientation, 'D') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'D') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("The ships have been placed.\n")
@@ -141,8 +160,14 @@ class Battleships:
             elif self.__count == 7:
 
                 print("Placing Submarines now")
-                if self.__placement(self.__p1_board, row, column, orientation, 'S') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'S') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("The ships have been placed.\n")
@@ -153,8 +178,14 @@ class Battleships:
             elif self.__count == 9:
 
                 print("Placing Patrol boats now")
-                if self.__placement(self.__p1_board, row, column, orientation, 'P') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'P') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("The ships have been placed.\n")
@@ -169,7 +200,12 @@ class Battleships:
 
             self.__boardSetup = 2
             if self.__count == 1:
-                if self.__placement(self.__p1_board, row, column, orientation, 'C') == 0:
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'C') == 0:
                     return -1
 
                 print("Your opponent has placed their Carrier ships.")
@@ -177,7 +213,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 3:
-                if self.__placement(self.__p1_board, row, column, orientation, 'B') == 0:
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'B') == 0:
                     return -1
 
                 print("Your opponent has placed their Battleships.")
@@ -185,7 +226,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 5:
-                if self.__placement(self.__p1_board, row, column, orientation, 'D') == 0:
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'D') == 0:
                     return -1
 
                 print("Your opponent has placed their Destroyer ships.")
@@ -193,7 +239,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 7:
-                if self.__placement(self.__p1_board, row, column, orientation, 'S') == 0:
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'S') == 0:
                     return -1
 
                 print("Your opponent has placed their Submarines.")
@@ -201,7 +252,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 9:
-                if self.__placement(self.__p1_board, row, column, orientation, 'P') == 0:
+                if self.__placement(
+                        self.__p1_board,
+                        row,
+                        column,
+                        orientation,
+                        'P') == 0:
                     return -1
 
                 print("Your opponent has placed their Patrol boats.")
@@ -217,8 +273,14 @@ class Battleships:
             if self.__count == 2:
 
                 print("Placing Carrier ships now")
-                if self.__placement(self.__p2_board, row, column, orientation, 'C') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'C') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("\nThe ships have been placed.")
@@ -229,8 +291,14 @@ class Battleships:
             elif self.__count == 4:
 
                 print("Placing Battleships now")
-                if self.__placement(self.__p2_board, row, column, orientation, 'B') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'B') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("\nThe ships have been placed.")
@@ -241,8 +309,14 @@ class Battleships:
             elif self.__count == 6:
 
                 print("Placing Destroyer ships now")
-                if self.__placement(self.__p2_board, row, column, orientation, 'D') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'D') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("\nThe ships have been placed.")
@@ -253,8 +327,14 @@ class Battleships:
             elif self.__count == 8:
 
                 print("Placing Submarines now")
-                if self.__placement(self.__p2_board, row, column, orientation, 'S') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'S') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("\nThe ships have been placed.")
@@ -265,8 +345,14 @@ class Battleships:
             elif self.__count == 10:
 
                 print("Placing Patrol boats now")
-                if self.__placement(self.__p2_board, row, column, orientation, 'P') == 0:
-                    print("\nThe ships could not be placed..\nPlease check the board and try again.")
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'P') == 0:
+                    print(
+                        "\nThe ships could not be placed..\nPlease check the board and try again.")
                     return -1
 
                 print("\nThe ships have been placed.")
@@ -282,7 +368,12 @@ class Battleships:
 
             self.__boardSetup = 1
             if self.__count == 2:
-                if self.__placement(self.__p2_board, row, column, orientation, 'C') == 0:
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'C') == 0:
                     return -1
 
                 print("Your opponent has placed their Carrier ships.")
@@ -290,7 +381,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 4:
-                if self.__placement(self.__p2_board, row, column, orientation, 'B') == 0:
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'B') == 0:
                     return -1
 
                 print("Your opponent has placed their Battleships.")
@@ -298,7 +394,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 6:
-                if self.__placement(self.__p2_board, row, column, orientation, 'D') == 0:
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'D') == 0:
                     return -1
 
                 print("Your opponent has placed their Destroyer ships.")
@@ -306,7 +407,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 8:
-                if self.__placement(self.__p2_board, row, column, orientation, 'S') == 0:
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'S') == 0:
                     return -1
 
                 print("Your opponent has placed their Submarines.")
@@ -314,7 +420,12 @@ class Battleships:
                 return 0
 
             elif self.__count == 10:
-                if self.__placement(self.__p2_board, row, column, orientation, 'P') == 0:
+                if self.__placement(
+                        self.__p2_board,
+                        row,
+                        column,
+                        orientation,
+                        'P') == 0:
                     return -1
 
                 print("Your opponent has placed their Patrol boats.")
@@ -409,7 +520,9 @@ class Battleships:
                 return -1
 
             elif 1 <= self.__p1_board[row][column] <= 5:
-                print("Your opponent has hit a ship at {}, {}..".format(row + 1, column + 1))
+                print(
+                    "Your opponent has hit a ship at {}, {}..".format(
+                        row + 1, column + 1))
                 self.__p1_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p1_board, self.__p1_play)
@@ -432,7 +545,9 @@ class Battleships:
                 return -1
 
             elif 1 <= self.__p2_board[row][column] <= 5:
-                print("Your opponent has hit a ship at {}, {}..".format(row + 1, column + 1))
+                print(
+                    "Your opponent has hit a ship at {}, {}..".format(
+                        row + 1, column + 1))
                 self.__p2_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p2_board, self.__p2_play)
