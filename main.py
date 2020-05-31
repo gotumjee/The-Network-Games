@@ -2,7 +2,6 @@ import os
 import shutil
 import time
 import multiprocessing
-import sys
 import requests
 
 from chess import *
@@ -27,7 +26,7 @@ def typewriter(message, speed):
     for char in message:
         sys.stdout.write(char)
         sys.stdout.flush()
-        if(char == '\n'):
+        if char == '\n':
             time.sleep(speed * 3)
         time.sleep(speed)
     return
@@ -55,17 +54,13 @@ def main():
 
         while True is True:
             # Input menu loop
-            typewriter(
-                "1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ",
-                0.01)
+            typewriter("1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ", 0.01)
             usr = input()
             if usr == "1":
                 gameChoice = "0"
                 while gameChoice < "1" or gameChoice > "4":
-                    typewriter(
-                        "\n\n1. Chess.\n2. Battleships." +
-                        "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ",
-                        0.01)
+                    typewriter("\n\n1. Chess.\n2. Battleships." +
+                               "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ", 0.01)
                     gameChoice = input()
                 if gameChoice == "1":
                     game = Chess()
@@ -101,7 +96,7 @@ def main():
                     network.send(ip_addr)
                 except KeyboardInterrupt:
                     return
-                except BaseException:
+                except ConnectionRefusedError:
                     typewriter(
                         "\nUnexpected error. Please check the IP address and try again.", 0.03)
                     time.sleep(2)
@@ -124,10 +119,10 @@ def main():
 
             network.send(gameChoice)
 
-            while (1):
+            while True is True:
                 typewriter("Enter your name: ", 0.03)
-                localName = str(input())
-                if(not localName):
+                localName = input()
+                if not localName:
                     typewriter(
                         "\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
                     time.sleep(1)
@@ -154,12 +149,11 @@ def main():
                 game = NoughtsAndCrosses()
                 displayOpponentCommands = 1
 
-            while (1):
+            while True is True:
                 typewriter("Enter your name: ", 0.03)
                 localName = str(input())
-                if(not localName):
-                    typewriter(
-                        "\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
+                if not localName:
+                    typewriter("\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
                     time.sleep(1)
                     continue
                 else:
