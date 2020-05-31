@@ -49,8 +49,7 @@ class Chat:
             self.network.send("[{}]: {}\n".format(self.name, text))
             # Print message to text box
             self.text.insert(END, "[{}]: {}\n".format(self.name, text))
-        except Exception as e:
-            print(e)
+        except:
             self.text.insert(END, "Disconnected...\n")
 
     def recv_thread(self):
@@ -59,8 +58,7 @@ class Chat:
             while True:
                 recv = self.network.receive()
                 self.text.insert(END, recv)
-        except Exception as e:
-            print(e)
+        except:
             self.text.insert(END, "Disconnected...\n")
 
 
