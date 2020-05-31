@@ -58,10 +58,10 @@ def main():
                 0.01)
             usr = input()
             if usr == "1":
-                while (1):
+                while True is True:
                     typewriter(
                         "Enter a password for the game (leave blank for no password): ", 0.01)
-                    if(network.setpassword(input()) == -1):
+                    if network.setpassword(input()) == -1:
                         typewriter(
                             "The password is too long..\nPlease try a shorter password.", 0.03)
                         time.sleep(3)
@@ -72,12 +72,9 @@ def main():
                     clear()
                     break
 
-                gameChoice = "0"
-                while (1):
-                    typewriter(
-                        "Which game would you like to play?\n\n1. Chess.\n2. Battleships." +
-                        "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ",
-                        0.01)
+                while True is True:
+                    typewriter("Which game would you like to play?\n\n1. Chess.\n2. Battleships." +
+                               "\n3. Noughts and Crosses.\n4. Return to homepage.\n\nEnter your choice: ", 0.01)
                     gameChoice = input()
                     if gameChoice == "1":
                         game = Chess()
@@ -109,10 +106,10 @@ def main():
 
                 typewriter("\nWaiting for a connection...", 0.03)
                 network.host()
-                while(1):
+                while True is True:
                     network.send(1)
                     try:
-                        if(network.receive() == str(1)):
+                        if network.receive() == str(1):
                             break
                     except UnicodeDecodeError:
                         continue
@@ -124,7 +121,7 @@ def main():
                 typewriter(
                     "Enter the IP address (or enter \'r\' to go back): ", 0.03)
                 opp_ip_addr = input()
-                if(opp_ip_addr == 'r'):
+                if opp_ip_addr == 'r':
                     main()
                 try:
                     ip_addr = requests.get("https://api.ipify.org").text
@@ -135,28 +132,23 @@ def main():
                 except KeyboardInterrupt:
                     return
                 except ConnectionRefusedError:
-                    typewriter(
-                        "\nUnexpected error. Please check the IP address and try again.", 0.03)
+                    typewriter("\nUnexpected error. Please check the IP address and try again.", 0.03)
                     time.sleep(2)
                     main()
-                while (1):
-                    typewriter(
-                        "Enter the password assigned by the host (leave blank if there's no password): ",
-                        0.01)
+                while True is True:
+                    typewriter("Enter the password assigned by the host (leave blank if there's no password): ", 0.01)
                     network.setpassword(input())
                     network.send(1)
                     try:
-                        if(network.receive() == str(1)):
+                        if network.receive() == "1":
                             typewriter("You have the right password!", 0.01)
                         else:
-                            typewriter(
-                                "\nThe password's incorrect..\nPlease double-check with the host.", 0.03)
+                            typewriter("\nThe password's incorrect..\nPlease double-check with the host.", 0.03)
                             time.sleep(3)
                             clear()
                             continue
                     except UnicodeDecodeError:
-                        typewriter(
-                            "\nThe password's incorrect..\nPlease double-check with the host.", 0.03)
+                        typewriter("\nThe password's incorrect..\nPlease double-check with the host.", 0.03)
                         time.sleep(3)
                         clear()
                         continue
@@ -185,8 +177,7 @@ def main():
                 typewriter("Enter your name: ", 0.03)
                 localName = input()
                 if not localName:
-                    typewriter(
-                        "\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
+                    typewriter("\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
                     time.sleep(1)
                     continue
                 else:
@@ -215,8 +206,7 @@ def main():
                 typewriter("Enter your name: ", 0.03)
                 localName = str(input())
                 if not localName:
-                    typewriter(
-                        "\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
+                    typewriter("\nThat doesn't look like a name..\nTry again.\n\n", 0.03)
                     time.sleep(1)
                     continue
                 else:
@@ -229,9 +219,8 @@ def main():
         typewriter("Opening chat...", 0.01)
         time.sleep(2)
         # open the chat window
-        chat = multiprocessing.Process(
-            target=open_chat, args=(
-                localName, usr, opp_ip_addr))
+        chat = multiprocessing.Process(target=open_chat,
+                                       args=(localName, usr, opp_ip_addr))
         chat.start()
         clear()
 
@@ -242,7 +231,8 @@ def main():
             typewriter(
                 "\n\n\nEnter 'r' to resign, 'cl' and 'cr' to castle left or right (respectively) or a" +
                 "set of co-ordinates in the form 'a1a1' to move a piece.\n",
-                0.01)
+                0.01
+            )
             time.sleep(3)
             game.printBoard()
         elif gameChoice == "2":
@@ -252,7 +242,8 @@ def main():
                 "\n\n\nEnter in the format 'row, column, orientation' to place your ships." +
                 "\nOrientation options are \'h\'(Horizontal) or \'v\'(Vertical)." +
                 "\nTo strike a ship, enter in the format 'row, column'.\nYou can enter 'r' to resign at any time.\n",
-                0.01)
+                0.01
+            )
             time.sleep(3)
             game.display()
         else:
@@ -261,7 +252,8 @@ def main():
             typewriter(
                 "\n\n\nEnter in the format 'x y' to place a mark at those coordinates." +
                 "x and y must be an integer in the range (0-2).\n",
-                0.01)
+                0.01
+            )
             time.sleep(1)
 
         # Game play loop
@@ -282,9 +274,7 @@ def main():
                     typewriter("\nWaiting for %s to play...\n" % netName, 0.01)
                     userInput = network.receive()
                     if displayOpponentCommands == 1:
-                        typewriter(
-                            "%s tries: %s\n\n" %
-                            (netName, userInput), 0.01)
+                        typewriter("%s tries: %s\n\n" % (netName, userInput), 0.01)
                     else:
                         typewriter("%s entered a command\n" % netName, 0.01)
                     gameState = game.inputToGame(userInput)
