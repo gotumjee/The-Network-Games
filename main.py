@@ -53,17 +53,13 @@ def main():
 
         while True is True:
             # Input menu loop
-            typewriter(
-                "1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ",
-                0.01)
+            typewriter("1. Host a game.\n2. Connect and play.\n3. Exit.\n\nEnter your choice: ", 0.01)
             usr = input()
             if usr == "1":
                 while True is True:
-                    typewriter(
-                        "Enter a password for the game (leave blank for no password): ", 0.01)
+                    typewriter("Enter a password for the game (leave blank for no password): ", 0.01)
                     if network.setpassword(input()) == -1:
-                        typewriter(
-                            "The password is too long..\nPlease try a shorter password.", 0.03)
+                        typewriter("The password is too long..\nPlease try a shorter password.", 0.03)
                         time.sleep(3)
                         clear()
                         continue
@@ -131,6 +127,10 @@ def main():
                     return
                 except ConnectionRefusedError:
                     typewriter("\nUnexpected error. Please check the IP address and try again.", 0.03)
+                    time.sleep(2)
+                    main()
+                except socket.gaierror:
+                    typewriter("\nThat wasn't an IP address. Please check and try again.\n", 0.03)
                     time.sleep(2)
                     main()
                 while True is True:
