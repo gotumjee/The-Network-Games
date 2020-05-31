@@ -101,8 +101,7 @@ def main():
                     typewriter("Your public IP address is: " + ip_addr, 0.03)
                 except BaseException:
                     ip_addr = "127.0.0.1"
-                    typewriter(
-                        "Your public IP address is currently unknown..\nUsing localhost.", 0.03)
+                    typewriter("Your public IP address is currently unknown..\nUsing localhost.", 0.03)
 
                 typewriter("\nWaiting for a connection...", 0.03)
                 network.host()
@@ -118,8 +117,7 @@ def main():
                 break
 
             elif usr == "2":
-                typewriter(
-                    "Enter the IP address (or enter \'r\' to go back): ", 0.03)
+                typewriter("Enter the IP address (or enter \'r\' to go back): ", 0.03)
                 opp_ip_addr = input()
                 if opp_ip_addr == 'r':
                     main()
