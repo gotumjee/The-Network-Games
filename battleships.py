@@ -2,7 +2,7 @@ class Battleships:
     __boardSetup = 1
     __usr = None
     __count = 1
-    __turn = 1
+    __turn = 0
     __firstWin = 0
 
     # initializes the "boards" with value '0'
@@ -12,11 +12,17 @@ class Battleships:
     __p2_play = [[0] * 10 for _ in range(10)]
 
     # used to ensure that each ships down message only prints once
-    __ret1 = 0
-    __ret2 = 0
-    __ret3 = 0
-    __ret4 = 0
-    __ret5 = 0
+    __u1ret1 = 0
+    __u1ret2 = 0
+    __u1ret3 = 0
+    __u1ret4 = 0
+    __u1ret5 = 0
+
+    __u2ret1 = 0
+    __u2ret2 = 0
+    __u2ret3 = 0
+    __u2ret4 = 0
+    __u2ret5 = 0
 
     def __init__(self, usr):
         # defines the User based on the user number passed by the main program
@@ -56,7 +62,7 @@ class Battleships:
         elif board[row][column] == 7:
             return str('*')
 
-    def __display(self, board):
+    def display(self, board = [[0] * 10 for _ in range(10)]):
         # used to display the board with the necessary formatting
         row = 0  # represents each rows
         # prints the line numbers horizontally
@@ -104,7 +110,7 @@ class Battleships:
                     return -1
 
                 print("The ships have been placed.\n")
-                self.__display(self.__p1_board)
+                self.display(self.__p1_board)
                 self.__count += 1
                 return 0
 
@@ -116,7 +122,7 @@ class Battleships:
                     return -1
 
                 print("The ships have been placed.\n")
-                self.__display(self.__p1_board)
+                self.display(self.__p1_board)
                 self.__count += 1
                 return 0
 
@@ -128,7 +134,7 @@ class Battleships:
                     return -1
 
                 print("The ships have been placed.\n")
-                self.__display(self.__p1_board)
+                self.display(self.__p1_board)
                 self.__count += 1
                 return 0
 
@@ -140,7 +146,7 @@ class Battleships:
                     return -1
 
                 print("The ships have been placed.\n")
-                self.__display(self.__p1_board)
+                self.display(self.__p1_board)
                 self.__count += 1
                 return 0
 
@@ -152,7 +158,7 @@ class Battleships:
                     return -1
 
                 print("The ships have been placed.\n")
-                self.__display(self.__p1_board)
+                self.display(self.__p1_board)
                 self.__count += 1
 
                 self.__boardSetup = 2
@@ -216,7 +222,7 @@ class Battleships:
                     return -1
 
                 print("\nThe ships have been placed.")
-                self.__display(self.__p2_board)
+                self.display(self.__p2_board)
                 self.__count += 1
                 return 0
 
@@ -228,7 +234,7 @@ class Battleships:
                     return -1
 
                 print("\nThe ships have been placed.")
-                self.__display(self.__p2_board)
+                self.display(self.__p2_board)
                 self.__count += 1
                 return 0
 
@@ -240,7 +246,7 @@ class Battleships:
                     return -1
 
                 print("\nThe ships have been placed.")
-                self.__display(self.__p2_board)
+                self.display(self.__p2_board)
                 self.__count += 1
                 return 0
 
@@ -252,7 +258,7 @@ class Battleships:
                     return -1
 
                 print("\nThe ships have been placed.")
-                self.__display(self.__p2_board)
+                self.display(self.__p2_board)
                 self.__count += 1
                 return 0
 
@@ -264,10 +270,11 @@ class Battleships:
                     return -1
 
                 print("\nThe ships have been placed.")
-                self.__display(self.__p2_board)
+                self.display(self.__p2_board)
                 self.__count += 1
 
                 self.__boardSetup = 0
+                self.__turn = 1
                 print("\nDone placing ships!\nThe game will start now.")
                 return 0
 
@@ -314,6 +321,7 @@ class Battleships:
                 self.__count += 1
 
                 self.__boardSetup = 0
+                self.__turn = 1
                 print("Your opponent is done placing ships!\nThe game will start now.")
                 return 0
 
@@ -374,7 +382,7 @@ class Battleships:
 
             if self.__p2_play[row][column] == 6 or self.__p2_play[row][column] == 7:
                 print("You have already hit this one, please try again.")
-                self.__display(self.__p2_play)
+                self.display(self.__p2_play)
                 return -1
 
             elif 1 <= self.__p2_board[row][column] <= 5:
@@ -382,7 +390,7 @@ class Battleships:
                 self.__p2_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p2_board, self.__p2_play)
-                self.__display(self.__p2_play)
+                self.display(self.__p2_play)
                 self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYou go again.")
@@ -392,7 +400,7 @@ class Battleships:
                 print("You missed..")
                 self.__p2_play[row][column] = 7
                 self.__turn = 2
-                self.__display(self.__p2_play)
+                self.display(self.__p2_play)
                 return 0
 
         if self.__usr == 1 and self.__turn == 2:
@@ -405,7 +413,7 @@ class Battleships:
                 self.__p1_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p1_board, self.__p1_play)
-                self.__display(self.__p1_play)
+                self.display(self.__p1_play)
                 self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYour opponent goes again.")
@@ -415,7 +423,7 @@ class Battleships:
                 print("Your opponent missed!")
                 self.__p1_play[row][column] = 7
                 self.__turn = 1
-                self.__display(self.__p1_play)
+                self.display(self.__p1_play)
                 return 0
 
         if self.__usr == 2 and self.__turn == 1:
@@ -428,7 +436,7 @@ class Battleships:
                 self.__p2_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p2_board, self.__p2_play)
-                self.__display(self.__p2_play)
+                self.display(self.__p2_play)
                 self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYour opponent goes again.")
@@ -438,7 +446,7 @@ class Battleships:
                 print("Your opponent missed!")
                 self.__p2_play[row][column] = 7
                 self.__turn = 2
-                self.__display(self.__p2_play)
+                self.display(self.__p2_play)
                 return 0
 
         elif self.__usr == 2 and self.__turn == 2:
@@ -452,7 +460,7 @@ class Battleships:
                 self.__p1_play[row][column] = 6
                 shipsdownval = self.__shipsdown(
                     self.__p1_board, self.__p1_play)
-                self.__display(self.__p1_play)
+                self.display(self.__p1_play)
                 self.__displaydown(shipsdownval)
                 if self.__checkwin() != -1:
                     print("\nYou go again.")
@@ -462,7 +470,7 @@ class Battleships:
                 print("You missed..")
                 self.__p1_play[row][column] = 7
                 self.__turn = 1
-                self.__display(self.__p1_play)
+                self.display(self.__p1_play)
                 return 0
 
     def __checkwin(self, userInput=None):  # checks to see if all ships have been struck
@@ -516,25 +524,45 @@ class Battleships:
                     elif board[i][j] == 5:
                         sum5 += 1
 
-        if sum1 == 5 and self.__ret1 == 0:
-            self.__ret1 = 1
-            return 1
+        if sum1 == 5:
+            if(self.__u1ret1 == 0):
+                self.__u1ret1 = 1
+                return 1
+            elif(self.__u2ret1 == 0):
+                self.__u2ret1 = 1
+                return 1
 
-        if sum2 == 4 and self.__ret2 == 0:
-            self.__ret2 = 1
-            return 2
+        if sum2 == 5:
+            if(self.__u1ret2 == 0):
+                self.__u1ret2 = 1
+                return 1
+            elif(self.__u2ret2 == 0):
+                self.__u2ret2 = 1
+                return 2
 
-        if sum3 == 3 and self.__ret3 == 0:
-            self.__ret3 = 1
-            return 3
+        if sum3 == 5:
+            if(self.__u1ret3 == 0):
+                self.__u1ret3 = 1
+                return 3
+            elif(self.__u2ret3 == 0):
+                self.__u2ret3 = 1
+                return 3
 
-        if sum4 == 3 and self.__ret4 == 0:
-            self.__ret4 = 1
-            return 4
+        if sum4 == 5:
+            if(self.__u1ret4 == 0):
+                self.__u1ret4 = 1
+                return 4
+            elif(self.__u2ret4 == 0):
+                self.__u2ret4 = 1
+                return 4
 
-        if sum5 == 2 and self.__ret5 == 0:
-            self.__ret5 = 1
-            return 5
+        if sum5 == 5:
+            if(self.__u1ret5 == 0):
+                self.__u1ret5 = 1
+                return 5
+            elif(self.__u2ret5 == 0):
+                self.__u2ret5 = 1
+                return 5
 
         else:
             return 0
@@ -576,23 +604,23 @@ class Battleships:
                 orientation = str(tempInput[2]).strip().lower()
 
         except (ValueError, IndexError):
-            if (self.__usr == 1 and self.__count <= 5) or (self.__usr == 2 and self.__count > 5):
+            if (self.__usr == self.__turn or self.__usr == self.__boardSetup):
                 print("Please enter in the format \"row, column(, orientation)\"..")
             return 0
 
         if row < 1 or row > 10:
-            if (self.__usr == 1 and self.__count <= 5) or (self.__usr == 2 and self.__count > 5):
+            if (self.__usr == self.__turn or self.__usr == self.__boardSetup):
                 print("Please enter a row between 1 and 10..")
             return 0
 
         elif column < 1 or column > 10:
-            if (self.__usr == 1 and self.__count <= 5) or (self.__usr == 2 and self.__count > 5):
+            if (self.__usr == self.__turn or self.__usr == self.__boardSetup):
                 print("Please enter a column between 1 and 10..")
             return 0
 
         if self.__boardSetup != 0:
             if orientation != 'h' and orientation != 'v':
-                if (self.__usr == 1 and self.__count <= 5) or (self.__usr == 2 and self.__count > 5):
+                if (self.__usr == self.__turn or self.__usr == self.__boardSetup):
                     print("Please enter a valid orientation..")
                 return 0
 

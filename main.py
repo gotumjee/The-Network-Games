@@ -24,8 +24,7 @@ def clear():
 def typewriter(message, speed):
     """ A display function. Writes each character with a delay"""
     for char in message:
-        sys.stdout.write(char)
-        sys.stdout.flush()
+        print(char, end='', flush = True)
         if char == '\n':
             time.sleep(speed * 3)
         time.sleep(speed)
@@ -80,8 +79,13 @@ def main():
                     clear()
                     continue
                 # Create network connection
-                ip_addr = requests.get("https://api.ipify.org").text
-                typewriter("Your public IP address is: " + ip_addr, 0.03)
+                try:
+                    ip_addr = requests.get("https://api.ipify.org").text
+                    typewriter("Your public IP address is: " + ip_addr, 0.03)
+                except:
+                    ip_addr = "127.0.0.1"
+                    typewriter("Your public IP address is currently unknown..\nUsing localhost.", 0.03)
+
                 typewriter("\nWaiting for a connection... \n", 0.03)
                 network.host()
                 opp_ip_addr = network.receive()
@@ -90,7 +94,10 @@ def main():
             elif usr == "2":
                 typewriter("Enter the IP address: ", 0.03)
                 opp_ip_addr = input()
-                ip_addr = requests.get("https://api.ipify.org").text
+                try:
+                    ip_addr = requests.get("https://api.ipify.org").text
+                except:
+                    ip_addr = "127.0.0.1"
                 try:
                     network.connect(opp_ip_addr)
                     network.send(ip_addr)
@@ -105,7 +112,7 @@ def main():
                 break
 
             elif usr == "3":
-                sys.exit()
+                exit()
 
             else:
                 typewriter("Please enter one of the above options..", 0.03)
@@ -180,14 +187,18 @@ def main():
                 "\n\n\nEnter 'r' to resign, 'cl' and 'cr' to castle left or right (respectively) or a" +
                 "set of co-ordinates in the form 'a1a1' to move a piece.\n",
                 0.01)
+            time.sleep(3)
             game.printBoard()
         elif gameChoice == "2":
             typewriter("Welcome to Battleships!", 0.03)
             time.sleep(1)
             typewriter(
                 "\n\n\nEnter in the format 'row, column, orientation' to place your ships." +
+                "\nOrientation options are \'h\'(Horizontal) or \'v\'(Vertical)." +
                 "\nTo strike a ship, enter in the format 'row, column'.\nYou can enter 'r' to resign at any time.\n",
                 0.01)
+            time.sleep(3)
+            game.display()
         else:
             typewriter("Welcome to Noughts And Crosses!", 0.03)
             time.sleep(1)
@@ -195,7 +206,7 @@ def main():
                 "\n\n\nEnter in the format 'x y' to place a mark at those coordinates." +
                 "x and y must be an integer in the range (0-2).\n",
                 0.01)
-        time.sleep(1)
+            time.sleep(1)
 
         # Game play loop
         gameState = 0
@@ -227,10 +238,12 @@ def main():
                 turn = True
 
         network.close()
+        time.sleep(3)
+        clear()
         typewriter("\nPress ENTER to Exit\n", 0.01)
         input()
         chat.terminate()
-        sys.exit()
+        exit()
 
 
 if __name__ == "__main__":
